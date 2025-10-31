@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
@@ -9,10 +10,10 @@ app.use(express.json());
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
-
+const DB_URL = process.env.DB_URL || "mongodb://localhost:27017/ToDo";
 mongoose
   .connect(
-    "mongodb://localhost:27017/ToDo"
+    DB_URL
     //   ,
     //   {
     //   useNewUrlParse: true,
@@ -28,7 +29,7 @@ app.use("/user", userRoutes);
 const taskRoutes = require("./routes/taskRoutes");
 app.use("/", taskRoutes);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on PORT ${PORT}`);
 });
